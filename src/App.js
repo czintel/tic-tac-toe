@@ -8,9 +8,17 @@ function Square({ value, onSquareClick }) {
 	);
 }
 
-export default function Board() {
+export function Board() {
 	const [squares, setSquares] = useState(Array(9).fill(null));
 	const [xIsNext, setXIsNext] = useState(true);
+
+	const winner = calculateWinner(squares);
+	let status;
+	if (winner) {
+		status = "Winner: " + winner;
+	} else {
+		status = "Next player: " + (xIsNext ? "X" : "O");
+	}
 
 	function handleClick(i) {
 		if (squares[i] || calculateWinner(squares)) {
@@ -30,6 +38,7 @@ export default function Board() {
 
 	return (
 		<React.Fragment>
+			<div className="status">{status}</div>
 			<div className="board-row">
 				<Square value={squares[0]} onSquareClick={() => handleClick(0)} />
 				<Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -69,4 +78,17 @@ function calculateWinner(squares) {
 		}
 	}
 	return null;
+}
+
+export default function Game() {
+	return (
+		<div className="game">
+			<div className="game-board">
+				<Board />
+			</div>
+			<div className="game-info">
+				<ol>{/*TODO*/}</ol>
+			</div>
+		</div>
+	);
 }
